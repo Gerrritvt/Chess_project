@@ -2,7 +2,9 @@
 Use chess data in order to send customized emails with performanse insights in played chess openings. 
 
 # How to use
-Run `src/everyday_mail.py` to request data and send an email, where credentials come from `src/credentials.py` which is in the gitignore file.
+Run `src/everyday_mail.py` to request data and send an email, where credentials come from `src/credentials.py` which is in the gitignore file. 
+
+I use https://www.pythonanywhere.com/ to run the file in a virtual environment daily, which is free of charge.
 
 # Requirements
 Libraries in `requirements.txt`.
