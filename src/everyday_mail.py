@@ -21,5 +21,3 @@ if __name__ == "__main__":
     text = f"{progress_string}\n\n{yesterday_string}"
     send_simple_message(mail_api_url, key, sender, to, subject, text)
     print("Email succesful")
-
-
