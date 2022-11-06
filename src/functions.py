@@ -157,3 +157,28 @@ def opening_mistake(game:dict, username:str) -> tuple[bool, int]:
                         boolean = True
                         break
     return boolean, int(math.ceil((move_nr / 2)) + 1) 
+
+def opening_grades(games:Generator[dict, None, None], username:str) -> tuple[list, list]:
+    """Goes throught analysed games and returns the played opening and a "grade", which is a metric for the accuracy of the played opening.
+
+    Args:
+        games (Generator[dict, None, None]): played games.
+        username (str): Username on Lichess
+
+    Returns:
+        tuple[list, list]: played openings and corresponding grades.
+    """
+    all_openings = []
+    grades = []
+    for game in games:
+        if 'opening' in game.keys():
+            made_mistake, move_nr = opening_mistake(game, username)
+            if made_mistake:
+                analysis_string = f"opening mistake in move {move_nr}"
+                grade = move_nr 
+            else:
+                analysis_string = f"no opening mistake"
+                grade = 10
+            grades.append(grade)
+            all_openings.append(game['opening']['name'])
+    return all_openings, grades
