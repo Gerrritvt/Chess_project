@@ -18,11 +18,10 @@ if __name__ == "__main__":
     
     # Recent games update
     recent_games_string = grades_history(games_2, username, min_played=5)
-    print(recent_games_string)
 
     # Send email
     date = datetime.now().strftime("%d-%m-%Y")
     subject = f"Lichess update {date}"
-    text = f"{progress_string}\n\n{yesterday_string}\n\n{recent_games_string}"
+    text = f"{progress_string}\n\n{yesterday_string}"
     send_simple_message(mail_api_url, key, sender, to, subject, text)
     print("Email succesful")
