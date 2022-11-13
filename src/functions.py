@@ -1,6 +1,7 @@
 from typing import Generator
 import requests, lichess.api, math, re
 from datetime import datetime, timedelta
+import pandas as pd
 
 def send_simple_message(mail_api_url:str, key:str, sender:str, to:str, subject:str, text:str):
     """Send a text email.
@@ -182,3 +183,26 @@ def opening_grades(games:Generator[dict, None, None], username:str) -> tuple[lis
             grades.append(grade)
             all_openings.append(game['opening']['name'])
     return all_openings, grades
+    
+def grades_history(games:Generator[dict, None, None], username:str, min_played:int) -> str:
+    """Go through games and write a report. Report only imperfect openings with a certain number of occurences.
+
+    Args:
+        games (Generator[dict, None, None]): played games
+        username (str): username on Lichess
+        min_played (int): minimum number of times that the opening has to be played in order to appear in report.
+
+    Returns:
+        str: Pandas dataframe in the form of a string.
+    """
+    openings, grades = opening_grades(games, username)
+    df = pd.DataFrame(list(zip(openings, grades)), columns =['Opening', 'Grade'])
+    dff = pd.DataFrame(df['Opening'].value_counts())
+    means = []
+    for opening in dff.index:
+        means.append(df[df['Opening'] == opening].mean().values[0])
+    dff['Grade'] = means
+    dff = dff.rename(columns={"Opening":"Count"})
+    dff.index.name = "Opening"
+    dff = dff[(dff["Count"] >= min_played) & (dff["Grade"] < 10)]
+    return dff.to_string()
