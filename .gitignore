@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 src/credentials.py
+src/data_visualization.ipynb
